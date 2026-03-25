@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin:0;
+    font-family:Inter;
+    background:#020617;
+    color:white;
+    padding:20px;
+    padding-bottom:100px;
+}
+
+/* HEADER */
+.header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* CARD */
+.card {
+    margin-top:20px;
+    padding:20px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.05);
+}
+
+/* TELEGRAM BUTTON */
+.tg-btn {
+    margin-top:15px;
+    padding:15px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+    text-align:center;
+    cursor:pointer;
+}
+
+/* INFO BLOCKS */
+.info-grid {
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.info {
+    padding:15px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.04);
+    font-size:13px;
+}
+
+/* NAVBAR */
+.navbar {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    left:0;
+    display:flex;
+    justify-content:space-around;
+    background:rgba(10,10,20,0.9);
+    padding:12px 0;
+}
+
+.nav-item {opacity:0.5;}
+.active {opacity:1;color:#6366f1;}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2 id="title"></h2>
+</div>
+
+<div class="card">
+    <p id="desc"></p>
+
+    <div class="tg-btn" onclick="openTG()">
+        📩 @NikitaHid
+    </div>
+</div>
+
+<div class="info-grid">
+    <div class="info" id="i1"></div>
+    <div class="info" id="i2"></div>
+    <div class="info" id="i3"></div>
+    <div class="info" id="i4"></div>
+</div>
+
+<div class="navbar">
+    <div class="nav-item" onclick="goHome()" id="navHome"></div>
+    <div class="nav-item" onclick="goForm()" id="navReq"></div>
+    <div class="nav-item active" id="navSup"></div>
+</div>
+
+<script>
+let lang = localStorage.getItem("lang") || "ru";
+
+const t = {
+ru:{
+title:"Поддержка",
+desc:"Свяжитесь с нашим менеджером для помощи по обмену и вопросам.",
+i1:"⚡ Быстрый ответ",
+i2:"🔐 Конфиденциальность",
+i3:"🌍 Поддержка 24/7",
+i4:"💼 Персональный менеджер",
+navHome:"Главная",
+navReq:"Заявка",
+navSup:"Поддержка"
+},
+en:{
+title:"Support",
+desc:"Contact our manager for help with exchange and questions.",
+i1:"⚡ Fast response",
+i2:"🔐 Privacy",
+i3:"🌍 24/7 support",
+i4:"💼 Personal manager",
+navHome:"Home",
+navReq:"Request",
+navSup:"Support"
+},
+gr:{
+title:"Υποστήριξη",
+desc:"Επικοινωνήστε μαζί μας για βοήθεια.",
+i1:"⚡ Γρήγορη απάντηση",
+i2:"🔐 Απόρρητο",
+i3:"🌍 24/7 υποστήριξη",
+i4:"💼 Προσωπικός manager",
+navHome:"Αρχική",
+navReq:"Αίτηση",
+navSup:"Υποστήριξη"
+},
+ar:{
+title:"الدعم",
+desc:"تواصل معنا للمساعدة.",
+i1:"⚡ رد سريع",
+i2:"🔐 خصوصية",
+i3:"🌍 دعم 24/7",
+i4:"💼 مدير شخصي",
+navHome:"الرئيسية",
+navReq:"طلب",
+navSup:"الدعم"
+}
+};
+
+function update(){
+const x=t[lang];
+
+document.getElementById("title").innerText=x.title;
+document.getElementById("desc").innerText=x.desc;
+
+document.getElementById("i1").innerText=x.i1;
+document.getElementById("i2").innerText=x.i2;
+document.getElementById("i3").innerText=x.i3;
+document.getElementById("i4").innerText=x.i4;
+
+document.getElementById("navHome").innerText=x.navHome;
+document.getElementById("navReq").innerText=x.navReq;
+document.getElementById("navSup").innerText=x.navSup;
+}
+update();
+
+/* TELEGRAM */
+function openTG(){
+    window.open("https://t.me/NikitaHid", "_blank");
+}
+
+/* NAV */
+function goHome(){
+    window.location.href="index.html";
+}
+function goForm(){
+    window.location.href="form.html";
+}
+</script>
+
+</body>
+</html>

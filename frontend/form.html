@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin:0;
+    font-family:Inter;
+    background:#020617;
+    color:white;
+    padding:20px;
+    padding-bottom:100px;
+}
+
+/* CARD */
+.card {
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    border-radius:20px;
+    backdrop-filter: blur(20px);
+}
+
+/* INPUT */
+input,select {
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border-radius:12px;
+    border:none;
+    outline:none;
+}
+
+/* BUTTON */
+button {
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    border-radius:14px;
+    border:none;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+}
+
+/* STEP */
+.step { display:none; }
+.step.active {
+    display:block;
+    animation:fade 0.4s ease;
+}
+
+@keyframes fade {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* INFO BLOCKS */
+.info-grid {
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.info {
+    padding:15px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.04);
+    font-size:13px;
+}
+
+/* NAVBAR */
+.navbar {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    left:0;
+    display:flex;
+    justify-content:space-around;
+    background:rgba(10,10,20,0.9);
+    padding:12px 0;
+}
+
+.nav-item {opacity:0.5;}
+.active {opacity:1;color:#6366f1;}
+</style>
+</head>
+
+<body>
+
+<h2 id="title"></h2>
+
+<div class="card">
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+    <input id="username" placeholder="@username">
+    <button id="btn1" onclick="nextStep(2)"></button>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+    <input id="name" placeholder="Ваше имя">
+    <button id="btn2" onclick="nextStep(3)"></button>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+    <select id="country" onchange="updateCities()">
+        <option value="">Страна</option>
+        <option value="russia">Россия</option>
+        <option value="uae">ОАЭ</option>
+        <option value="cyprus">Кипр</option>
+    </select>
+    <button id="btn3" onclick="nextStep(4)"></button>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="step4">
+    <select id="city">
+        <option value="">Город</option>
+    </select>
+    <button id="btn4" onclick="submitForm()"></button>
+</div>
+
+</div>
+
+<!-- INFO BLOCKS -->
+<div class="info-grid">
+    <div class="info" id="i1"></div>
+    <div class="info" id="i2"></div>
+    <div class="info" id="i3"></div>
+    <div class="info" id="i4"></div>
+</div>
+
+<div class="navbar">
+<div class="nav-item" onclick="goHome()" id="navHome"></div>
+<div class="nav-item active" id="navReq"></div>
+<div class="nav-item" onclick="goSupport()" id="navSup"></div>
+</div>
+
+<script>
+let lang=localStorage.getItem("lang")||"ru";
+
+const t={
+ru:{
+title:"Создание заявки",
+next:"Далее",
+send:"Отправить",
+i1:"⚡ Быстрые обмены",
+i2:"🔐 Надежность",
+i3:"🌍 Международный сервис",
+i4:"💼 Персональный подход",
+navHome:"Главная",
+navReq:"Заявка",
+navSup:"Поддержка"
+},
+en:{
+title:"Create request",
+next:"Next",
+send:"Send",
+i1:"⚡ Fast exchange",
+i2:"🔐 Security",
+i3:"🌍 Global service",
+i4:"💼 Personal approach",
+navHome:"Home",
+navReq:"Request",
+navSup:"Support"
+},
+gr:{
+title:"Δημιουργία",
+next:"Επόμενο",
+send:"Αποστολή",
+i1:"⚡ Γρήγορη ανταλλαγή",
+i2:"🔐 Ασφάλεια",
+i3:"🌍 Παγκόσμια υπηρεσία",
+i4:"💼 Προσωπική προσέγγιση",
+navHome:"Αρχική",
+navReq:"Αίτηση",
+navSup:"Υποστήριξη"
+},
+ar:{
+title:"إنشاء طلب",
+next:"التالي",
+send:"إرسال",
+i1:"⚡ تبادل سريع",
+i2:"🔐 أمان",
+i3:"🌍 خدمة عالمية",
+i4:"💼 تعامل شخصي",
+navHome:"الرئيسية",
+navReq:"طلب",
+navSup:"الدعم"
+}
+};
+
+function update(){
+const x=t[lang];
+
+document.getElementById("title").innerText=x.title;
+
+document.getElementById("btn1").innerText=x.next;
+document.getElementById("btn2").innerText=x.next;
+document.getElementById("btn3").innerText=x.next;
+document.getElementById("btn4").innerText=x.send;
+
+document.getElementById("i1").innerText=x.i1;
+document.getElementById("i2").innerText=x.i2;
+document.getElementById("i3").innerText=x.i3;
+document.getElementById("i4").innerText=x.i4;
+
+document.getElementById("navHome").innerText=x.navHome;
+document.getElementById("navReq").innerText=x.navReq;
+document.getElementById("navSup").innerText=x.navSup;
+}
+update();
+
+/* STEP SWITCH */
+function nextStep(step){
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+document.getElementById("step"+step).classList.add("active");
+}
+
+/* CITIES */
+const cities={
+russia:["Москва","Санкт-Петербург","Екатеринбург","Краснодар","Сочи","Самара","Казань","Новосибирск"],
+uae:["Дубай","Абу-Даби","Шарджа","Аджман","Рас-эль-Хайма"],
+cyprus:["Никосия","Лимассол","Ларнака","Пафос","Фамагуста"]
+};
+
+function updateCities(){
+const c=document.getElementById("country").value;
+const city=document.getElementById("city");
+
+city.innerHTML='<option value="">Город</option>';
+
+if(cities[c]){
+cities[c].forEach(x=>{
+const o=document.createElement("option");
+o.value=x;
+o.textContent=x;
+city.appendChild(o);
+});
+}
+}
+
+/* SUBMIT */
+async function submitForm(){
+const u=document.getElementById("username").value;
+const n=document.getElementById("name").value;
+const c=document.getElementById("country").value;
+const city=document.getElementById("city").value;
+
+if(!u||!n||!c||!city){
+alert("Заполни все поля");
+return;
+}
+
+try {
+const res = await fetch("http://localhost:3000/send", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+username: u,
+name: n,
+country: c,
+city: city
+})
+});
+
+if(!res.ok){
+throw new Error("Server error");
+}
+
+showSuccess();
+
+} catch(e){
+console.log(e);
+alert("Ошибка соединения с сервером");
+}
+}
+
+/* NAV */
+function goHome(){
+window.location.href="index.html";
+}
+
+function goSupport(){
+  window.location.href="support.html";
+}
+
+function showSuccess(){
+const box = document.getElementById("successBox");
+
+box.style.opacity = "1";
+box.style.transform = "translate(-50%,-50%) scale(1)";
+
+setTimeout(()=>{
+box.style.opacity = "0";
+box.style.transform = "translate(-50%,-50%) scale(0.8)";
+},2000);
+}
+
+</script>
+
+<div id="successBox" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0.8);
+background:linear-gradient(135deg,#22c55e,#16a34a);
+padding:25px 30px;
+border-radius:20px;
+text-align:center;
+opacity:0;
+pointer-events:none;
+transition:0.3s;
+z-index:999;
+">
+  <h3 style="margin:0;">✅</h3>
+  <p id="successText" style="margin-top:10px;">Заявка отправлена</p>
+</div>
+
+</body>
+</html>

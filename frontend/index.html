@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurex</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #020617;
+  color: white;
+}
+
+/* GLOW */
+.bg-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #6366f1, transparent);
+  top: -100px;
+  left: -100px;
+  filter: blur(100px);
+}
+
+/* LOADER */
+#loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  z-index: 1000;
+}
+
+/* LANGUAGE SCREEN */
+#langScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.lang-btn {
+  width: 240px;
+  padding: 16px;
+  margin: 8px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+  text-align: center;
+}
+
+/* APP */
+#app {
+  display: none;
+  padding: 20px;
+  padding-bottom: 90px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* LANG MENU */
+.lang-menu {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: rgba(0,0,0,0.9);
+  border-radius: 10px;
+  display: none;
+}
+.lang-menu div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* HERO */
+.hero h1 {
+  font-size: 28px;
+}
+.hero p {
+  opacity: 0.6;
+}
+
+/* BIG ACTION */
+.big-action {
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+}
+
+/* INFO BLOCKS */
+.info-blocks {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.info {
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.3s;
+}
+.info h4 {
+  margin: 0;
+  font-size: 16px;
+}
+.info p {
+  opacity: 0.6;
+  margin-top: 6px;
+  font-size: 14px;
+}
+.info:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.06);
+}
+
+/* ABOUT BLOCK */
+.about {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.about h3 {
+  margin-top: 0;
+  font-size: 20px;
+}
+.about p {
+  opacity: 0.7;
+  line-height: 1.5;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: rgba(10,10,20,0.9);
+  padding: 12px 0;
+}
+.nav-item {
+  opacity: 0.5;
+}
+.active {
+  opacity: 1;
+  color: #6366f1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-glow"></div>
+<div id="loader">AUREX</div>
+
+<div id="langScreen">
+  <h2>Choose language</h2>
+  <div class="lang-btn" onclick="setLang('ru')">🇷🇺 Русский</div>
+  <div class="lang-btn" onclick="setLang('en')">🇬🇧 English</div>
+  <div class="lang-btn" onclick="setLang('gr')">🇬🇷 Ελληνικά</div>
+  <div class="lang-btn" onclick="setLang('ar')">🇦🇪 العربية</div>
+</div>
+
+<div id="app">
+
+  <div class="header">
+    <h3>Aurex</h3>
+    <div onclick="toggleMenu()">🌐</div>
+  </div>
+
+  <div class="lang-menu" id="menu">
+    <div onclick="setLang('ru')">RU</div>
+    <div onclick="setLang('en')">EN</div>
+    <div onclick="setLang('ar')">AR</div>
+    <div onclick="setLang('gr')">GR</div>
+    <div onclick="resetLang()">Reset</div>
+  </div>
+
+  <div class="hero">
+    <h1 id="title"></h1>
+    <p id="subtitle"></p>
+  </div>
+
+  <div class="big-action" onclick="goForm()">
+    <h2 id="create"></h2>
+    <p id="createDesc"></p>
+  </div>
+
+  <div class="info-blocks">
+    <div class="info">
+      <h4 id="i1"></h4>
+      <p id="i1d"></p>
+    </div>
+    <div class="info">
+      <h4 id="i2"></h4>
+      <p id="i2d"></p>
+    </div>
+    <div class="info">
+      <h4 id="i3"></h4>
+      <p id="i3d"></p>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about">
+    <h3 id="aboutTitle"></h3>
+    <p id="aboutP1"></p>
+    <p id="aboutP2"></p>
+    <p id="aboutP3"></p>
+    <p id="aboutP4"></p>
+  </div>
+
+</div>
+
+<div class="navbar">
+  <div class="nav-item active" id="navHome"></div>
+  <div class="nav-item" onclick="goForm()" id="navReq"></div>
+  <div class="nav-item" onclick="goSupport()" id="navSup"></div>
+</div>
+
+<script>
+let lang = localStorage.getItem("lang");
+
+const t = {
+  ru:{
+    title:"Обмен криптовалют",
+    subtitle:"Быстро и безопасно",
+    create:"💱 Создать заявку",
+    createDesc:"Оформление за 1 минуту",
+    i1:"⚡ Быстрые сделки",
+    i1d:"Мгновенная обработка заявок",
+    i2:"🔐 Безопасность",
+    i2d:"Все операции защищены",
+    i3:"🌍 Международный сервис",
+    i3d:"Работаем по всему миру",
+    aboutTitle:"О компании Aurex",
+    aboutP1:"Aurex — это современный сервис выездного обмена криптовалют, предоставляющий удобный, быстрый и безопасный способ покупки и продажи цифровых активов.",
+    aboutP2:"Мы обеспечиваем личное сопровождение сделки, проверку всех этапов и высокий уровень безопасности криптовалютных операций.",
+    aboutP3:"Платформа ориентирована на международные криптовалютные сделки, выгодные курсы обмена и минимальные комиссии.",
+    aboutP4:"Ключевые преимущества: быстрый обмен криптовалют, надежный криптообменник, прозрачные условия, круглосуточная поддержка и работа по всему миру.",
+    navHome:"Главная",
+    navReq:"Заявка",
+    navSup:"Поддержка"
+  },
+
+  en:{
+    title:"Crypto exchange",
+    subtitle:"Fast & secure",
+    create:"💱 Create request",
+    createDesc:"Submit in 1 minute",
+    i1:"⚡ Fast deals",
+    i1d:"Instant processing",
+    i2:"🔐 Security",
+    i2d:"Safe operations",
+    i3:"🌍 Global service",
+    i3d:"Worldwide work",
+    aboutTitle:"About Aurex",
+    aboutP1:"Aurex is a modern crypto exchange service providing a fast, secure and convenient way to buy and sell digital assets.",
+    aboutP2:"We offer full transaction support, verification of all stages and a high level of security for crypto operations.",
+    aboutP3:"Our platform supports international transactions with competitive rates and low fees.",
+    aboutP4:"Key advantages include fast crypto exchange, reliable service, transparent conditions, 24/7 support and global availability.",
+    navHome:"Home",
+    navReq:"Request",
+    navSup:"Support"
+  },
+
+  gr:{
+    title:"Ανταλλαγή crypto",
+    subtitle:"Γρήγορα και ασφαλή",
+    create:"💱 Δημιουργία",
+    createDesc:"1 λεπτό",
+    i1:"⚡ Γρήγορα",
+    i1d:"Άμεση обработка",
+    i2:"🔐 Ασφάλεια",
+    i2d:"Πλήρης προστασία",
+    i3:"🌍 Παγκόσμια",
+    i3d:"Σε όλο τον κόσμο",
+    aboutTitle:"Σχετικά με την Aurex",
+    aboutP1:"Η Aurex είναι μια σύγχρονη υπηρεσία ανταλλαγής κρυπτονομισμάτων που προσφέρει γρήγορες και ασφαλείς συναλλαγές.",
+    aboutP2:"Παρέχουμε πλήρη υποστήριξη συναλλαγών και υψηλό επίπεδο ασφάλειας σε κάθε βήμα.",
+    aboutP3:"Η πλατφόρμα υποστηρίζει διεθνείς συναλλαγές με ανταγωνιστικές ισοτιμίες.",
+    aboutP4:"Πλεονεκτήματα: γρήγορη ανταλλαγή crypto, αξιόπιστη υπηρεσία, διαφάνεια, υποστήριξη 24/7 και παγκόσμια πρόσβαση.",
+    navHome:"Αρχική",
+    navReq:"Αίτηση",
+    navSup:"Υποστήριξη"
+  },
+
+  ar:{
+    title:"تبادل العملات",
+    subtitle:"سريع وآمن",
+    create:"💱 إنشاء طلب",
+    createDesc:"خلال دقيقة",
+    i1:"⚡ سريع",
+    i1d:"تنفيذ فوري",
+    i2:"🔐 أمان",
+    i2d:"حماية كاملة",
+    i3:"🌍 عالمي",
+    i3d:"حول العالم",
+    aboutTitle:"عن Aurex",
+    aboutP1:"Aurex هي خدمة حديثة لتبادل العملات الرقمية توفر طريقة سريعة وآمنة لشراء وبيع الأصول الرقمية.",
+    aboutP2:"نوفر دعمًا كاملاً للمعاملات مع مستوى عالٍ من الأمان في جميع المراحل.",
+    aboutP3:"تدعم المنصة المعاملات الدولية بأسعار تنافسية ورسوم منخفضة.",
+    aboutP4:"المزايا: تبادل سريع، خدمة موثوقة، شفافية، دعم 24/7 وتوفر عالمي.",
+    navHome:"الرئيسية",
+    navReq:"طلب",
+    navSup:"الدعم"
+  }
+};
+
+function update(){
+  const x=t[lang];
+
+  document.getElementById("title").innerText=x.title;
+  document.getElementById("subtitle").innerText=x.subtitle;
+  document.getElementById("create").innerText=x.create;
+  document.getElementById("createDesc").innerText=x.createDesc;
+
+  document.getElementById("i1").innerText=x.i1;
+  document.getElementById("i1d").innerText=x.i1d;
+  document.getElementById("i2").innerText=x.i2;
+  document.getElementById("i2d").innerText=x.i2d;
+  document.getElementById("i3").innerText=x.i3;
+  document.getElementById("i3d").innerText=x.i3d;
+
+  // ABOUT
+  document.getElementById("aboutTitle").innerText=x.aboutTitle;
+  document.getElementById("aboutP1").innerText=x.aboutP1;
+  document.getElementById("aboutP2").innerText=x.aboutP2;
+  document.getElementById("aboutP3").innerText=x.aboutP3;
+  document.getElementById("aboutP4").innerText=x.aboutP4;
+
+  document.getElementById("navHome").innerText=x.navHome;
+  document.getElementById("navReq").innerText=x.navReq;
+  document.getElementById("navSup").innerText=x.navSup;
+}
+
+function setLang(l){
+  lang=l;
+  localStorage.setItem("lang",l);
+  document.getElementById("langScreen").style.display="none";
+  document.getElementById("app").style.display="block";
+  update();
+}
+
+function resetLang(){
+  localStorage.removeItem("lang");
+  location.reload();
+}
+
+function toggleMenu(){
+  const m=document.getElementById("menu");
+  m.style.display=m.style.display==="block"?"none":"block";
+}
+
+function goForm(){
+  window.location.href="form.html";
+}
+
+function goSupport(){
+  window.location.href="support.html";
+}
+
+setTimeout(()=>{
+  document.getElementById("loader").style.display="none";
+  if(!lang){
+    document.getElementById("langScreen").style.display="flex";
+  }else{
+    document.getElementById("app").style.display="block";
+    update();
+  }
+},1000);
+</script>
+
+</body>
+</html>
