@@ -197,6 +197,13 @@ navSup:"الدعم"
 };
 
 function update(){
+
+    document.getElementById("successText").innerText =
+  lang === "ru" ? "Заявка отправлена 🚀" :
+  lang === "en" ? "Request sent 🚀" :
+  lang === "gr" ? "Η αίτηση στάλθηκε 🚀" :
+  "تم إرسال الطلب 🚀";
+
 const x=t[lang];
 
 document.getElementById("title").innerText=x.title;
@@ -216,6 +223,22 @@ document.getElementById("navReq").innerText=x.navReq;
 document.getElementById("navSup").innerText=x.navSup;
 }
 update();
+
+// TELEGRAM USER AUTO
+if (window.Telegram && Telegram.WebApp) {
+  Telegram.WebApp.ready();
+
+  const user = Telegram.WebApp.initDataUnsafe.user;
+
+  if (user) {
+    if (user.username) {
+      document.getElementById("username").value = "@" + user.username;
+    }
+    if (user.first_name) {
+      document.getElementById("name").value = user.first_name;
+    }
+  }
+}
 
 /* STEP SWITCH */
 function nextStep(step){
@@ -259,7 +282,7 @@ return;
 }
 
 try {
-const res = await fetch("http://localhost:3000/send", {
+const res = await fetch("https://aurex-app.onrender.com/send", {
 method: "POST",
 headers: {
 "Content-Type": "application/json"
@@ -277,6 +300,12 @@ throw new Error("Server error");
 }
 
 showSuccess();
+
+setTimeout(() => {
+  if (window.Telegram) {
+    Telegram.WebApp.close();
+  }
+}, 2000);
 
 } catch(e){
 console.log(e);
@@ -322,7 +351,7 @@ transition:0.3s;
 z-index:999;
 ">
   <h3 style="margin:0;">✅</h3>
-  <p id="successText" style="margin-top:10px;">Заявка отправлена</p>
+  <p id="successText"></p>
 </div>
 
 </body>
